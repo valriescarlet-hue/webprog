@@ -2,44 +2,55 @@
 session_start();
 include "config/database.php";
 
-if(isset($_SESSION["role"])) {
-    if(isset($_SESSION["role"]) == "admin") {
-        header("Location : admin/dashboard.php");
+if (isset($_SESSION["role"])) {
+
+    if ($_SESSION["role"] == "admin") {
+        header("Location: admin/dashboard.php");
+    } else {
+        header("Location: student/dashboard.php");
     }
-    else{
-          header("Location : student/dashboard.php");
-    }
+
     exit;
 }
+
 $error = "";
-if(isset($_POST["login"])){
-$username = mysqli_real_escape_string($conn,$_POST["username"]);
-$password = $_POST ["password"];
 
+if (isset($_POST["login"])) {
 
-$sql = "SELECT * FROM users WHERE username = '$username' LIMIT 1";
-$result = mysqli_query($conn, $sql);
+    $username = mysqli_real_escape_string($conn, $_POST["username"]);
+    $password = $_POST["password"];
 
-if(mysqli_num_rows($result) == 1){
-    $user = mysqli_fetch_assoc($result);
-    if(password_verify($password,$user["password"])){
-        $_SESSION["user_id"] = $user ["id"];
-        $_SESSION["full_name"] = $user ["full_name"];
-        $_SESSION["role"] = $user ["role"];
-        
-        if($user["role"] == "admin"){
-          header("Location : admin/dashboard.php");
+    $sql = "SELECT * FROM users WHERE username = '$username' LIMIT 1";
+    $result = mysqli_query($conn, $sql);
+
+    if (!$result) {
+        die("SQL Error: " . mysqli_error($conn));
     }
-    else{
-          header("Location : student/dashboard.php");
-    }
-        exit;
 
+    if (mysqli_num_rows($result) == 1) {
+
+        $user = mysqli_fetch_assoc($result);
+
+        if (password_verify($password, $user["password"])) {
+
+            $_SESSION["user_id"] = $user["id"];
+            $_SESSION["full_name"] = $user["full_name"];
+            $_SESSION["role"] = $user["role"];
+
+            if ($user["role"] == "admin") {
+                header("Location: admin/dashboard.php");
+            } else {
+                header("Location: student/dashboard.php");
+            }
+
+            exit;
+        }
     }
-}
-$error = "invalid username or password";
+
+    $error = "Invalid username or password";
 }
 ?>
+
 
 
 <!doctype html>
