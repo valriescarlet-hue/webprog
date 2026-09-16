@@ -1,3 +1,30 @@
+<?php
+session_start();
+ include "../../config/database.php";
+ //only admin can access
+ if(!isset ( $_SESSION["role"])|| $_SESSION ["role"] != "admin"){
+    header("location:../../index.php");
+    exit;
+ }
+$message =  "";
+if(isset($_POST["save"])){
+    $student_no = $_POST ["student_no"];
+    $fullname = $_POST ["full_name"];
+    $username = $_POST ["username"];
+    $password =  password_hash($_POST["password"] ,PASSWORD_DEFAULT);
+    $sql = "INSERT INTO 'users'('student_no','full_name','username','password','role') VALUES ('$student_no','$fullname','$username','$password','student')";
+    if(mysqli_query($conn,$sql)){
+        header("location: ../index.php?message=student record added sucessfully");
+        exit;
+    }
+else{
+    $message = "could not save or invalid";
+}
+
+
+}
+?>
+
 <!doctype html>
 <html lang="en">
 
@@ -32,8 +59,12 @@
             <div class="card-body p-4">
 
                 <h2>Student Account Form</h2>
+                <?php if($message != ""){?>
+                <div> class = "alert-alert-danger" <?php echo $message;?><div>
 
-                <form>
+                <?php } ?>
+
+                <form method="POST">
 
                     <!-- Student Number -->
                     <div class="mb-3">
@@ -41,7 +72,7 @@
                             Student Number
                         </label>
 
-                        <input class="form-control">
+                        <input class="form-control" name="student_no">
                     </div>
 
                     <!-- Full Name -->
@@ -50,7 +81,7 @@
                             Full Name
                         </label>
 
-                        <input class="form-control">
+                        <input class="form-control" name ="full_name>
                     </div>
 
                     <!-- Username -->
@@ -59,7 +90,7 @@
                             Username
                         </label>
 
-                        <input class="form-control">
+                        <input class="form-control" name="username">
                     </div>
 
                     <!-- Password -->
@@ -70,20 +101,21 @@
 
                         <input
                             type="password"
-                            class="form-control"
+                            class="form-control" name="password"
                         >
                     </div>
 
                     <!-- Form Actions -->
                     <button
-                        type="button"
+                        type="submit"
                         class="btn btn-primary"
+                        name="save"
                     >
                         Save Student
                     </button>
 
                     <a
-                        href="students.html"
+                        href="index.php"
                         class="btn btn-secondary"
                     >
                         Cancel

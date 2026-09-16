@@ -83,7 +83,7 @@ session_start();
                         echo mysqli_num_rows($students);?></h2>
 
                         <a
-                            href="students.html"
+                            href="students/index.php"
                             class="btn btn-primary btn-sm"
                         >
                             Manage Students
