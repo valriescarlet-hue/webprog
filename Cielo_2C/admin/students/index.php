@@ -61,7 +61,7 @@ $result = mysqli_query($conn, $sql);
                 <?php
                 if(isset($_GET["message"])){
                     ?>
-                    <div> class= "alert-sucess"<?php echo $_GET["message"];?></div>
+                    <div>  "alert-sucess"<?php echo $_GET["message"];?></div>
                 <?php
                 }
                 ?>

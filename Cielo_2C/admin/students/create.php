@@ -1,29 +1,43 @@
 <?php
-session_start();
- include "../../config/database.php";
- //only admin can access
- if(!isset ( $_SESSION["role"])|| $_SESSION ["role"] != "admin"){
-    header("location:../../index.php");
-    exit;
- }
-$message =  "";
-if(isset($_POST["save"])){
-    $student_no = $_POST ["student_no"];
-    $fullname = $_POST ["full_name"];
-    $username = $_POST ["username"];
-    $password =  password_hash($_POST["password"] ,PASSWORD_DEFAULT);
-    $sql = "INSERT INTO 'users'('student_no','full_name','username','password','role') VALUES ('$student_no','$fullname','$username','$password','student')";
-    if(mysqli_query($conn,$sql)){
-        header("location: ../index.php?message=student record added sucessfully");
+ session_start();
+    include "../../config/database.php";
+
+//IF USER IS ALREADY LOGGED IN, SEND THEM TO CORRECT DASHBOARD
+    if(!isset($_SESSION["role"]) || $_SESSION["role"] != "admin"){
+    
+        header("Location: ../../index.php");
         exit;
-    }
-else{
-    $message = "could not save or invalid";
-}
+        
+    }   
 
 
-}
+
+
+    $message = "";
+    if(isset($_POST["save"])){
+        //get all data from form
+        $student_no = $_POST["student_no"];
+        $full_name = $_POST["full_name"];
+        $username = $_POST["username"];
+        $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
+
+        //sql COMMAND TO INSERT RECORD
+        $sql = "INSERT INTO users (`student_no`, `full_name`, `username`, `password`, `role`) VALUES 
+        ('$student_no', '$full_name', '$username', '$password', 'student')";
+
+        if(mysqli_query($conn, $sql)){
+            header("Location: index.php?message=student Record Added Successfully");
+            exit;
+        }
+        else{
+            $message = "could not save student record!";
+        }
+
+    } 
+
+
 ?>
+
 
 <!doctype html>
 <html lang="en">
@@ -60,9 +74,8 @@ else{
 
                 <h2>Student Account Form</h2>
                 <?php if($message != ""){?>
-                <div> class = "alert-alert-danger" <?php echo $message;?><div>
-
-                <?php } ?>
+                     <div class="alert alert-danger"><?php echo $message;?></div>
+                     <?php }?>
 
                 <form method="POST">
 
@@ -81,7 +94,7 @@ else{
                             Full Name
                         </label>
 
-                        <input class="form-control" name ="full_name>
+                        <input class="form-control" name="full_name">
                     </div>
 
                     <!-- Username -->
@@ -101,7 +114,8 @@ else{
 
                         <input
                             type="password"
-                            class="form-control" name="password"
+                            class="form-control"
+                            name="password"
                         >
                     </div>
 
