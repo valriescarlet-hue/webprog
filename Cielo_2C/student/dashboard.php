@@ -2,16 +2,13 @@
 session_start();
  include "../config/database.php";
  //only admin can access
- if(!isset ( $_SESSION["role"])|| $_SESSION ["role"] != "admin"){
+ if(!isset ( $_SESSION["role"])|| $_SESSION ["role"] != 'student'){
     header("location:../index.php");
     exit;
 
 
  }
- $students = mysqli_query($conn,"SELECT id  FROM users WHERE role ='student'");
- $subjects =  mysqli_query($conn,"SELECT id  FROM subjects");
- $enrollment = mysqli_query($conn,"SELECT id  FROM enrollments");
-
+ 
 
 ?>
 
