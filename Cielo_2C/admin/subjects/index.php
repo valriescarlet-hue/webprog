@@ -124,7 +124,7 @@ $result = mysqli_query($conn, $sql);
 
                             <td>
                                 <a
-                                    href="subject_form.html"
+                                    href="edit.php?id=<?php echo $row['id']; ?>"
                                     class="btn btn-warning btn-sm"
                                 >
                                     Edit
@@ -133,7 +133,7 @@ $result = mysqli_query($conn, $sql);
                                 <a
                                     class="btn btn-danger btn-sm"
                                     href="delete.php?id=<?php echo $row['id']; ?>"
-                                    oneclick="return confirm('are you sure you want to delete this record?')"
+                                    oneclick = "return confirm('are you sure you want to delete this record?')"
                                 >
                                     Delete
                                 </a>
@@ -145,7 +145,7 @@ $result = mysqli_query($conn, $sql);
 
                     </tbody>
 
-                </table>
+                </table>   
 
             </div>
 

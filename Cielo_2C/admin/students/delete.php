@@ -6,10 +6,8 @@ session_start();
     header("location:../../index.php");
     exit;
  }
-
-
 $id =isset($_GET['id']) ? intval($_GET['id']) : 0;
-mysqli_query($conn, "DELETE FROM users WHERE id= $id AND role='student");
+mysqli_query($conn, "DELETE FROM users WHERE id= $id");
 header("location: index.php");
 
 exit;
